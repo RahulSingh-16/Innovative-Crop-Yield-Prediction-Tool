@@ -1,1 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crop Yield Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 400px;
+            width: 100%;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-top: 10px;
+            font-weight: bold;
+            color: #555;
+        }
+        select, input {
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            font-weight: bold;
+            text-align: center;
+            color: #28a745;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Crop Yield Prediction</h1>
+        <form id="predictionForm">
+            <label for="state">State</label>
+            <input type="text" id="state" name="state" required>
+            
+            <label for="cropType">Crop Type</label>
+            <select id="cropType" name="cropType" required>
+                <option value="Wheat">Wheat</option>
+                <option value="Rice">Rice</option>
+                <option value="Bajra">Bajra</option>
+            </select>
+            
+            <label for="soilType">Soil Type</label>
+            <select id="soilType" name="soilType" required>
+                <option value="Loamy">Loamy</option>
+                <option value="alluvial">Alluvial</option>
+            </select>
+            
+            <label for="rainfall">Rainfall</label>
+            <input type="number" id="rainfall" name="rainfall" step="0.01" required>
+            
+            <label for="irrigationArea">Irrigation Area</label>
+            <input type="number" id="irrigationArea" name="irrigationArea" step="0.01" required>
+            
+            <label for="year">Year</label>
+            <input type="number" id="year" name="year" required>
+            
+            <button type="submit">Predict Yield</button>
+        </form>
+        <div class="result" id="result"></div>
+    </div>
+    <script>
+        document.getElementById('predictionForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const formData = new FormData(e.target);
 
+            // Convert form data to JSON, ensuring proper data types
+            const data = {
+                state: formData.get('state'),
+                cropType: formData.get('cropType'),
+                soilType: formData.get('soilType'),
+                rainfall: parseFloat(formData.get('rainfall')),
+                irrigationArea: parseFloat(formData.get('irrigationArea')),
+                year: parseInt(formData.get('year'), 10),
+            };
+
+            try {
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    body: JSON.stringify(data),
+                    headers: { 'Content-Type': 'application/json' },
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    document.getElementById('result').textContent = `Predicted Crop Yield: ${result.yield} kg/ha`;
+                } else {
+                    document.getElementById('result').textContent = `Error: ${result.error}`;
+                }
+            } catch (error) {
+                document.getElementById('result').textContent = 'Error: Unable to process your request.';
+                console.error('Error:', error);
+            }
+        });
+    </script>
+</body>
+</html>
