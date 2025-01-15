@@ -1,0 +1,9 @@
+id,Year,State,Crop_Type,Rainfall,Soil_Type,Irrigation_Area
+1001,2021,Punjab,Wheat,556.9,Loamy,3500.7
+1002,2020,Punjab,Wheat,602.6,Loamy,3509.5
+1003,2019,Punjab,Rice,578.6,alluvial,3091.8
+1004,2018,Punjab,Rice,598.3,alluvial,3057.9
+1005,2017,Punjab,Rice,493,alluvial,3033
+1006,2014,Punjab,Bajra,384.9,Loamy,1.2
+1007,2013,Punjab,Bajra,619.7,Loamy,3.81
+1008,2011,Punjab,Bajra,218.9,Loamy,2.5
